@@ -1,2 +1,2 @@
 # botWishes
-A bot that parses messages and puts them into a separate storage
+Валютный бот который парсит XML и говорит курс ЦБ РФ
