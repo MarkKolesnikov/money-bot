@@ -8,11 +8,17 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.marko.exchangeratesbot.exception.ServiceException;
 import ru.marko.exchangeratesbot.service.ExchangeRatesService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Component
 public class ExchangeRatesBot extends TelegramLongPollingBot {
@@ -31,11 +37,13 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
     public ExchangeRatesBot(@Value("${bot.token}") String botToken) {
         super(botToken);
     }
+
     @Override
     public void onUpdateReceived(Update update) {
         if (!update.hasMessage() || !update.getMessage().hasText()) {
             return;
         }
+
         var message = update.getMessage().getText();
         var chatId = update.getMessage().getChatId();
         switch (message) {
@@ -55,6 +63,7 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
     public String getBotUsername() {
         return "marko_exchange_rates_bot";
     }
+
 
     private void startCommand(Long chatId, String userName) {
         var text = """
@@ -120,6 +129,7 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
                 Для получения текущих курсов валют воспользуйтесь командами:
                 /usd - курс доллара
                 /eur - курс евро
+                /gbp - курс фунта
                 """;
         sendMessage(chatId, text);
     }
@@ -130,10 +140,28 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
     }
 
     private void sendMessage(Long chatId, String text) {
-        var chatIdStr = String.valueOf(chatId);
-        var sendMessage = new SendMessage(chatIdStr, text);
+
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        List<KeyboardRow> keyboard = new ArrayList<>();
+
+        KeyboardRow row = new KeyboardRow();
+        row.add(new KeyboardButton("/usd"));
+        row.add(new KeyboardButton("/eur"));
+        row.add(new KeyboardButton("/gbp"));
+        keyboard.add(row);
+
+        keyboardMarkup.setKeyboard(keyboard);
+        keyboardMarkup.setSelective(true);
+        keyboardMarkup.setResizeKeyboard(true);
+        keyboardMarkup.setOneTimeKeyboard(false);
+
+        SendMessage message = new SendMessage();
+        message.setChatId(chatId.toString());
+        message.setText(text);
+        message.setReplyMarkup(keyboardMarkup);
+
         try {
-            execute(sendMessage);
+            execute(message);
         } catch (TelegramApiException e) {
             LOG.error("Ошибка отправки сообщения", e);
         }
