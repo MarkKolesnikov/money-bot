@@ -47,9 +47,9 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
                 String userName = update.getMessage().getChat().getUserName();
                 startCommand(chatId, userName);
             }
-            case "USD" -> usdCommand(chatId);
-            case "EUR" -> eurCommand(chatId);
-            case "GBP" -> gbpCommand(chatId);
+            case "✅ USD" -> usdCommand(chatId);
+            case "✅ EUR" -> eurCommand(chatId);
+            case "✅ GBP" -> gbpCommand(chatId);
             case HELP -> helpCommand(chatId);
             default -> unknowCommand(chatId);
         }
