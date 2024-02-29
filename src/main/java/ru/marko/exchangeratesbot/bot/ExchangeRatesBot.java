@@ -47,9 +47,9 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
                 String userName = update.getMessage().getChat().getUserName();
                 startCommand(chatId, userName);
             }
-            case "✅ USD" -> usdCommand(chatId);
-            case "✅ EUR" -> eurCommand(chatId);
-            case "✅ GBP" -> gbpCommand(chatId);
+            case "/usd" -> usdCommand(chatId);
+            case "/eur" -> eurCommand(chatId);
+            case "/gbp" -> gbpCommand(chatId);
             case HELP -> helpCommand(chatId);
             default -> unknowCommand(chatId);
         }
@@ -69,9 +69,9 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
                 
                 Для этого воспользуйтесь командами на панели клавиатуры:\s
                 
-                💵 USD - курс доллара
-                💶 EUR - курс евро
-                💷 GBP - курс фунта
+                💵 /usd - курс доллара
+                💶 /eur - курс евро
+                💷 /gbp - курс фунта
                 
                 ℹ Дополнительные команды ℹ
                 /help - получение справки
@@ -126,9 +126,9 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
                 Для получения текущих курсов валют воспользуйтесь командами:
                 на панели клавиатуры:
                 
-                💵 USD - курс доллара
-                💶 EUR - курс евро
-                💷 GBP - курс фунта
+                💵 /usd - курс доллара
+                💶 /eur - курс евро
+                💷 /gbp - курс фунта
                 """;
         sendMessage(chatId, text);
     }
@@ -146,9 +146,9 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
         List<KeyboardRow> keyboard = new ArrayList<>();
 
         KeyboardRow row = new KeyboardRow();
-        row.add(new KeyboardButton("✅ USD"));
-        row.add(new KeyboardButton("✅ EUR"));
-        row.add(new KeyboardButton("✅ GBP"));
+        row.add(new KeyboardButton("/usd"));
+        row.add(new KeyboardButton("/eur"));
+        row.add(new KeyboardButton("/gbp"));
         keyboard.add(row);
 
         KeyboardRow secondRow = new KeyboardRow();
