@@ -24,6 +24,9 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExchangeRatesBot.class);
 
+    private static final String USD = "/usd";
+    private static final String EUR = "/eur";
+    private static final String GBP = "/gbp";
     private static final String START = "/start";
     private static final String HELP = "/help";
 
@@ -47,9 +50,9 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
                 String userName = update.getMessage().getChat().getUserName();
                 startCommand(chatId, userName);
             }
-            case "/usd" -> usdCommand(chatId);
-            case "/eur" -> eurCommand(chatId);
-            case "/gbp" -> gbpCommand(chatId);
+            case USD -> usdCommand(chatId);
+            case EUR -> eurCommand(chatId);
+            case GBP -> gbpCommand(chatId);
             case HELP -> helpCommand(chatId);
             default -> unknowCommand(chatId);
         }
