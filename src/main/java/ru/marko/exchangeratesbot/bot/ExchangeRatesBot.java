@@ -145,9 +145,9 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
         List<KeyboardRow> keyboard = new ArrayList<>();
 
         KeyboardRow row = new KeyboardRow();
-        row.add(new KeyboardButton("/usd"));
-        row.add(new KeyboardButton("/eur"));
-        row.add(new KeyboardButton("/gbp"));
+        row.add(new KeyboardButton(USD));
+        row.add(new KeyboardButton(EUR));
+        row.add(new KeyboardButton(GBP));
         keyboard.add(row);
 
         keyboardMarkup.setKeyboard(keyboard);
