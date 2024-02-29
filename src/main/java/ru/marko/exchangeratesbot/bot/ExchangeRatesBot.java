@@ -65,14 +65,15 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
         var text = """
                 Добро пожаловать в бот, %s!
                 
-                Здесь Вы сможете узнать официальные курсы валют на сегодня, установленные ЦБ РФ.
+                🏦 Здесь Вы сможете узнать официальные курсы валют на сегодня, установленные ЦБ РФ 🏦
                 
-                Для этого воспользуйтесь командами:
-                /usd - курс доллара
-                /eur - курс евро
-                /gbp - курс фунта
+                Для этого воспользуйтесь командами на панели клавиатуры:\s
                 
-                Дополнительные команды:
+                💵 USD - курс доллара
+                💶 EUR - курс евро
+                💷 GBP - курс фунта
+                
+                ℹ Дополнительные команды ℹ
                 /help - получение справки
                 """;
         var formattedText = String.format(text, userName);
@@ -83,10 +84,10 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
         String formattedText;
         try {
             var usd = exchangeRatesService.getUSDExchangeRate();
-            var text = "Курс доллара на %s составляет %s рублей";
+            var text = "Курс доллара на %s составляет %s рублей \uD83E\uDE99";
             formattedText = String.format(text, LocalDate.now(), usd);
         } catch (ServiceException e) {
-            LOG.error("Ошибка получения курса доллара", e);
+            LOG.error("Ошибка получения курса доллара ❗", e);
             formattedText = "Не удалось получить текущий курс доллара. Попробуйте позже";
         }
         sendMessage(chatId, formattedText);
@@ -96,10 +97,10 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
         String formattedText;
         try {
             var usd = exchangeRatesService.getEURExchangeRate();
-            var text = "Курс евро на %s составляет %s рублей";
+            var text = "Курс евро на %s составляет %s рублей \uD83E\uDE99";
             formattedText = String.format(text, LocalDate.now(), usd);
         } catch (ServiceException e) {
-            LOG.error("Ошибка получения курса евро", e);
+            LOG.error("Ошибка получения курса евро ❗", e);
             formattedText = "Не удалось получить текущий курс евро. Попробуйте позже";
         }
         sendMessage(chatId, formattedText);
@@ -109,10 +110,10 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
         String formattedText;
         try {
             var gbp = exchangeRatesService.getEURExchangeRate();
-            var text = "Курс фунта на %s составляет %s рублей";
+            var text = "Курс фунта на %s составляет %s рублей \uD83E\uDE99";
             formattedText = String.format(text, LocalDate.now(), gbp);
         } catch (ServiceException e) {
-            LOG.error("Ошибка получения курса фунта", e);
+            LOG.error("Ошибка получения курса фунта ❗", e);
             formattedText = "Не удалось получить текущий курс фунта. Попробуйте позже";
         }
         sendMessage(chatId, formattedText);
@@ -120,12 +121,14 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
 
     private void helpCommand(Long chatId) {
         var text = """
-                Справочная информация по боту
+                ❗ Справочная информация по боту ❗
                 
                 Для получения текущих курсов валют воспользуйтесь командами:
-                /usd - курс доллара
-                /eur - курс евро
-                /gbp - курс фунта
+                на панели клавиатуры:
+                
+                💵 USD - курс доллара
+                💶 EUR - курс евро
+                💷 GBP - курс фунта
                 """;
         sendMessage(chatId, text);
     }
