@@ -109,7 +109,7 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
     private void gbpCommand(Long chatId) {
         String formattedText;
         try {
-            var gbp = exchangeRatesService.getEURExchangeRate();
+            var gbp = exchangeRatesService.getGBPExchangeRate();
             var text = "Курс фунта на %s составляет %s рублей \uD83E\uDE99";
             formattedText = String.format(text, LocalDate.now(), gbp);
         } catch (ServiceException e) {
@@ -134,8 +134,10 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
     }
 
     private void unknowCommand(Long chatId) {
-        var text = "Не удалось распознать коммнаду!";
+        var text = "Наш бот реагирует только на команды!";
+        var text1 = "Выберите валюту:";
         sendMessage(chatId, text);
+        sendMessage(chatId, text1);
     }
 
     private void sendMessage(Long chatId, String text) {
@@ -148,6 +150,10 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
         row.add(new KeyboardButton("✅ EUR"));
         row.add(new KeyboardButton("✅ GBP"));
         keyboard.add(row);
+
+        KeyboardRow secondRow = new KeyboardRow();
+        secondRow.add(new KeyboardButton("❌ Назад"));
+        keyboard.add(secondRow);
 
         keyboardMarkup.setKeyboard(keyboard);
         keyboardMarkup.setSelective(true);

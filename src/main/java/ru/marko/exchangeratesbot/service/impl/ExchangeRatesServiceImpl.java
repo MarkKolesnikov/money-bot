@@ -1,6 +1,5 @@
 package ru.marko.exchangeratesbot.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -16,13 +15,16 @@ import java.io.StringReader;
 @Service
 public class ExchangeRatesServiceImpl implements ExchangeRatesService {
 
-    @Autowired
-    private CbrClient client;
+    private final CbrClient client;
 
     private static final String USD_XPATH = "/ValCurs//Valute[@ID='R01235']/Value";
     private static final String EUR_XPATH = "/ValCurs//Valute[@ID='R01239']/Value";
 
     private static final String GBP_XPATH = "/ValCurs//Valute[@ID='R01035']/Value";
+
+    public ExchangeRatesServiceImpl(CbrClient client) {
+        this.client = client;
+    }
 
     @Override
     public String getUSDExchangeRate() throws ServiceException {
