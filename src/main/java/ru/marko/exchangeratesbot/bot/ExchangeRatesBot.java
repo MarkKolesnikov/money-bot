@@ -2,7 +2,6 @@ package ru.marko.exchangeratesbot.bot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -26,16 +25,13 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
     private static final Logger LOG = LoggerFactory.getLogger(ExchangeRatesBot.class);
 
     private static final String START = "/start";
-    private static final String USD = "/usd";
-    private static final String EUR = "/eur";
-    private static final String GBP = "/gbp";
     private static final String HELP = "/help";
 
-    @Autowired
-    private ExchangeRatesService exchangeRatesService;
+    private final ExchangeRatesService exchangeRatesService;
 
-    public ExchangeRatesBot(@Value("${bot.token}") String botToken) {
+    public ExchangeRatesBot(@Value("${bot.token}") String botToken, ExchangeRatesService exchangeRatesService) {
         super(botToken);
+        this.exchangeRatesService = exchangeRatesService;
     }
 
     @Override
@@ -51,9 +47,9 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
                 String userName = update.getMessage().getChat().getUserName();
                 startCommand(chatId, userName);
             }
-            case USD -> usdCommand(chatId);
-            case EUR -> eurCommand(chatId);
-            case GBP -> gbpCommand(chatId);
+            case "USD" -> usdCommand(chatId);
+            case "EUR" -> eurCommand(chatId);
+            case "GBP" -> gbpCommand(chatId);
             case HELP -> helpCommand(chatId);
             default -> unknowCommand(chatId);
         }
@@ -145,9 +141,9 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
         List<KeyboardRow> keyboard = new ArrayList<>();
 
         KeyboardRow row = new KeyboardRow();
-        row.add(new KeyboardButton(USD));
-        row.add(new KeyboardButton(EUR));
-        row.add(new KeyboardButton(GBP));
+        row.add(new KeyboardButton("USD"));
+        row.add(new KeyboardButton("EUR"));
+        row.add(new KeyboardButton("GBP"));
         keyboard.add(row);
 
         keyboardMarkup.setKeyboard(keyboard);
