@@ -9,7 +9,7 @@ import ru.marko.exchangeratesbot.exception.ServiceException;
 import java.io.IOException;
 
 @Component
-public class CbrClient {
+public class CbrClient { // Тут нужно будет реализовать интерфейс CbrService
 
     private final OkHttpClient client;
 
