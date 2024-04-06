@@ -13,7 +13,7 @@ public class CbrClient {
 
     private final OkHttpClient client;
 
-    @Value("${cbr.currency.rates.xml.url}")
+    @Value("${cbr.currency.rates.xml.url}") // тут путь к курсам валют
     private String url;
 
     public CbrClient(OkHttpClient client) {
