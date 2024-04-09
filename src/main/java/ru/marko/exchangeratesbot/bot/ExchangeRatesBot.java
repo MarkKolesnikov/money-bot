@@ -39,7 +39,7 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (!update.hasMessage() || !update.getMessage().hasText()) {
+        if (!update.hasMessage() || !update.getMessage().hasText()) { // проверка на текстовые сообщения
             return;
         }
 
