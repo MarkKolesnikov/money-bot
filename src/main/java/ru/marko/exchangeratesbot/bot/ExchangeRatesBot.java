@@ -24,11 +24,13 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExchangeRatesBot.class);
 
-    private static final String USD = "/usd";
-    private static final String EUR = "/eur";
-    private static final String GBP = "/gbp";
-    private static final String START = "/start";
-    private static final String HELP = "/help";
+    private static final String USD = "\uD83D\uDCB8 USD";
+    private static final String EUR = "eur";
+    private static final String GBP = "gbp";
+    private static final String START = "start";
+    private static final String HELP = "help";
+    private static final String BACK = "❌ Назад";
+
 
     private final ExchangeRatesService exchangeRatesService;
 
@@ -46,7 +48,8 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
         var message = update.getMessage().getText();
         var chatId = update.getMessage().getChatId();
         switch (message) {
-            case START -> {
+
+            case START, BACK -> {
                 String userName = update.getMessage().getChat().getUserName();
                 startCommand(chatId, userName);
             }
@@ -72,12 +75,12 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
                 
                 Для этого воспользуйтесь командами на панели клавиатуры:\s
                 
-                💵 /usd - курс доллара
-                💶 /eur - курс евро
-                💷 /gbp - курс фунта
+                💵 usd - курс доллара
+                💶 eur - курс евро
+                💷 gbp - курс фунта
                 
                 ℹ Дополнительные команды ℹ
-                /help - получение справки
+                help - получение справки
                 """;
         var formattedText = String.format(text, userName);
         sendMessage(chatId, formattedText);
@@ -86,10 +89,12 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
     private void usdCommand(Long chatId) {
         String formattedText;
         try {
+
             var usd = exchangeRatesService.getUSDExchangeRate();
             var text = "Курс доллара на %s составляет %s рублей \uD83E\uDE99";
             formattedText = String.format(text, LocalDate.now(), usd);
         } catch (ServiceException e) {
+
             LOG.error("Ошибка получения курса доллара ❗", e);
             formattedText = "Не удалось получить текущий курс доллара. Попробуйте позже";
         }
@@ -149,9 +154,10 @@ public class ExchangeRatesBot extends TelegramLongPollingBot {
         List<KeyboardRow> keyboard = new ArrayList<>();
 
         KeyboardRow row = new KeyboardRow();
-        row.add(new KeyboardButton("/usd"));
-        row.add(new KeyboardButton("/eur"));
-        row.add(new KeyboardButton("/gbp"));
+        row.add(new KeyboardButton("\uD83D\uDCB8 USD"));
+        row.add(new KeyboardButton("eur"));
+        row.add(new KeyboardButton("gbp"));
+        row.add(new KeyboardButton("help"));
         keyboard.add(row);
 
         KeyboardRow secondRow = new KeyboardRow();
